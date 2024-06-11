@@ -12,22 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
-const globalErrorhandler_1 = __importDefault(require("./middlewares/globalErrorhandler"));
-const routes_1 = __importDefault(require("./routes"));
-const notFound_1 = __importDefault(require("./middlewares/notFound"));
-// import { MovieRoutes } from "./modules/movies/movies.route";
-const app = (0, express_1.default)();
-//parsers
-app.use(express_1.default.json());
-// application routes
-app.use('/api', routes_1.default);
-const test = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const a = 10;
-    res.send(a);
-});
-app.get('/', (req, res) => { res.send('Hello World'); });
-app.use(globalErrorhandler_1.default);
-//Not Found
-app.use(notFound_1.default);
-exports.default = app;
+exports.auth = void 0;
+const http_status_1 = __importDefault(require("http-status"));
+const AppError_1 = __importDefault(require("../error/AppError"));
+const asyncHandler_1 = require("../utils/asyncHandler");
+const config_1 = __importDefault(require("../config"));
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const auth = () => {
+    return (0, asyncHandler_1.asyncHandler)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+        const token = req.headers.authorization;
+        if (!token) {
+            throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You are not authorized!');
+        }
+        const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_secret);
+        req.user = decoded;
+        next();
+    }));
+};
+exports.auth = auth;
