@@ -1,3 +1,5 @@
+import httpStatus from "http-status";
+import AppError from "../../error/AppError";
 import { asyncHandler } from "../../utils/asyncHandler";
 import sendResponse from "../../utils/sendResponse";
 import { userServices } from "./userservices";
@@ -13,12 +15,10 @@ const userLogin = asyncHandler(async (req, res) => {
         data:user
     });
 });
-
-
 const userRegister = asyncHandler(async (req, res) => {
     const result = await userServices.userRegister(req.body);
     sendResponse(res,{
-        statusCode:201,
+        statusCode:200,
         message:"User registered successfully",
         success:true,
         data:result
@@ -37,10 +37,14 @@ const userGetProfile = asyncHandler(async (req, res) => {
 });
 
 const userUpdateProfile = asyncHandler(async (req, res) => {
+    // if (req.body.role) {
+    //     throw new AppError(httpStatus.BAD_REQUEST, 'Role cannot be updated');
+    // }
+    
     const result = await userServices.userUpdateProfile(req);
     sendResponse(res,{
         statusCode:200,
-        message:"User profile updated successfully",
+        message:" Profile updated successfully",
         success:true,
         data:result
     });

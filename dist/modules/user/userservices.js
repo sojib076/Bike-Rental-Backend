@@ -31,7 +31,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_model_1 = require("./user.model");
 const config_1 = __importDefault(require("../../config"));
 const userLogin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const findUser = yield user_model_1.UserModel.findOne({ email: payload.email }).select('+password');
+    const findUser = yield user_model_1.User.findOne({ email: payload.email }).select('+password');
     if (!findUser) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
     }
@@ -41,12 +41,14 @@ const userLogin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const removePassword = findUser.toObject();
     const { password } = removePassword, user = __rest(removePassword, ["password"]);
+    console.log(user);
     const jwtPayload = {
         userId: findUser._id,
         email: findUser.email,
         role: findUser.role
     };
     const token = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, { expiresIn: '1d' });
+    console.log(token);
     return {
         token,
         user
@@ -56,35 +58,33 @@ const userRegister = (payload) => __awaiter(void 0, void 0, void 0, function* ()
     // const hashPassword = payload.password;
     const hashPassword = yield bcrypt_1.default.hash(payload.password, 12);
     payload.password = hashPassword;
-    const result = yield user_model_1.UserModel.create(payload);
-    const removePassword = result.toObject();
-    const { password } = removePassword, user = __rest(removePassword, ["password"]);
-    return user;
+    payload.role = 'user';
+    const result = yield user_model_1.User.create(payload);
+    const removePassword = user_model_1.User.removePassword(result);
+    return removePassword;
 });
 const userGetProfile = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    const findUser = yield user_model_1.UserModel.findById(user.userId);
+    const findUser = yield user_model_1.User.findById(user.userId);
     if (!findUser) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
     }
-    const removePassword = findUser.toObject();
-    const { password } = removePassword, userWithoutPassword = __rest(removePassword, ["password"]);
-    return userWithoutPassword;
+    const removePassword = user_model_1.User.removePassword(findUser);
+    return removePassword;
 });
 const userUpdateProfile = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    const findUser = yield user_model_1.UserModel.findById(user.userId);
+    const findUser = yield user_model_1.User.findById(user.userId);
     if (!findUser) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
     }
     const update = req.body;
-    const updatedUser = yield user_model_1.UserModel.findByIdAndUpdate(user.userId, update, { new: true });
+    const updatedUser = yield user_model_1.User.findByIdAndUpdate(user.userId, update, { new: true });
     if (!updatedUser) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Error updating user profile');
     }
-    const removePassword = updatedUser.toObject();
-    const { password } = removePassword, userWithoutPassword = __rest(removePassword, ["password"]);
-    return userWithoutPassword;
+    const removePassword = user_model_1.User.removePassword(updatedUser);
+    return removePassword;
 });
 exports.userServices = {
     userLogin,

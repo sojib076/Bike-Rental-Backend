@@ -12,54 +12,49 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userController = void 0;
+exports.bikeController = void 0;
 const asyncHandler_1 = require("../../utils/asyncHandler");
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
-const userservices_1 = require("./userservices");
-const userLogin = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield userservices_1.userServices.userLogin(req.body);
-    const { token, user } = result;
+const bike_service_1 = require("./bike.service");
+const createBike = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield bike_service_1.bikeService.createBike(req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
-        message: "User logged in successfully",
-        token: token,
+        data: result,
         success: true,
-        data: user
+        message: 'Bike added successfully'
     });
 }));
-const userRegister = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield userservices_1.userServices.userRegister(req.body);
+const getAllbikes = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield bike_service_1.bikeService.getAllbikes();
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
-        message: "User registered successfully",
+        data: result,
         success: true,
-        data: result
+        message: 'Bikes retrieved successfully'
     });
 }));
-const userGetProfile = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield userservices_1.userServices.userGetProfile(req);
+const updateBike = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield bike_service_1.bikeService.updateBike(req.params.id, req.body);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
-        message: "User profile retrieved successfully",
+        data: result,
         success: true,
-        data: result
+        message: 'Bike updated successfully'
     });
 }));
-const userUpdateProfile = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // if (req.body.role) {
-    //     throw new AppError(httpStatus.BAD_REQUEST, 'Role cannot be updated');
-    // }
-    const result = yield userservices_1.userServices.userUpdateProfile(req);
+const deleteBike = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield bike_service_1.bikeService.deleteBike(req.params.id);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
-        message: " Profile updated successfully",
+        data: result,
         success: true,
-        data: result
+        message: 'Bike deleted successfully'
     });
 }));
-exports.userController = {
-    userLogin,
-    userRegister,
-    userGetProfile,
-    userUpdateProfile
+exports.bikeController = {
+    createBike,
+    getAllbikes,
+    updateBike,
+    deleteBike
 };

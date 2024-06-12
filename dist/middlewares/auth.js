@@ -18,14 +18,20 @@ const AppError_1 = __importDefault(require("../error/AppError"));
 const asyncHandler_1 = require("../utils/asyncHandler");
 const config_1 = __importDefault(require("../config"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const auth = () => {
+const auth = (...requiredRoles) => {
     return (0, asyncHandler_1.asyncHandler)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-        const token = req.headers.authorization;
+        var _a;
+        const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+        console.log(token);
         if (!token) {
             throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You are not authorized!');
         }
         const decoded = jsonwebtoken_1.default.verify(token, config_1.default.jwt_secret);
         req.user = decoded;
+        console.log(decoded);
+        if (requiredRoles && !requiredRoles.includes(decoded.role)) {
+            throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'You have no access to this route!');
+        }
         next();
     }));
 };
