@@ -12,9 +12,6 @@ const createBike = async (body: TBike) => {
 
 const getAllbikes= async()=>{
     const bikes = await BikeModel.find();
-    if (bikes.length === 0) {
-        throw new AppError(httpStatus.NOT_FOUND, ' NO Bikes found')
-    }
     return bikes;
 }
 

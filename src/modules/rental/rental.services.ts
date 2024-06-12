@@ -60,12 +60,17 @@ const returnRental = async (id: string) => {
         throw new AppError(500, 'Error returning rental');
 
     }
-
-   
-
-   
 }
+ const getAllRentals = async (req:Request) => {
+    const user = req.user;
+    const result = await RentalModel.find({userId:user.userId});
+    
+    return result;
+ };
+
+
 export const rentalService = {
     createRental,
-    returnRental
+    returnRental,
+    getAllRentals
 };

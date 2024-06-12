@@ -27,6 +27,14 @@ const createBike = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void
 }));
 const getAllbikes = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield bike_service_1.bikeService.getAllbikes();
+    if (result.length === 0) {
+        return (0, sendResponse_1.default)(res, {
+            data: result,
+            message: 'No Data Found',
+            statusCode: 404,
+            success: false
+        });
+    }
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         data: result,

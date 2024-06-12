@@ -58,7 +58,6 @@ const userRegister = (payload) => __awaiter(void 0, void 0, void 0, function* ()
     // const hashPassword = payload.password;
     const hashPassword = yield bcrypt_1.default.hash(payload.password, 12);
     payload.password = hashPassword;
-    payload.role = 'user';
     const result = yield user_model_1.User.create(payload);
     const removePassword = user_model_1.User.removePassword(result);
     return removePassword;

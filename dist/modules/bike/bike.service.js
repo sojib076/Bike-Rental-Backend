@@ -22,9 +22,6 @@ const createBike = (body) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getAllbikes = () => __awaiter(void 0, void 0, void 0, function* () {
     const bikes = yield bike_model_1.BikeModel.find();
-    if (bikes.length === 0) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, ' NO Bikes found');
-    }
     return bikes;
 });
 const updateBike = (id, body) => __awaiter(void 0, void 0, void 0, function* () {

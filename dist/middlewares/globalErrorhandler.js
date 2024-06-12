@@ -7,7 +7,6 @@ const zod_1 = require("zod");
 const config_1 = __importDefault(require("../config"));
 const AppError_1 = __importDefault(require("../error/AppError"));
 const handleCastError_1 = __importDefault(require("../error/handleCastError"));
-const handleDuplicateError_1 = __importDefault(require("../error/handleDuplicateError"));
 const handleValidationError_1 = __importDefault(require("../error/handleValidationError"));
 const handleZodError_1 = __importDefault(require("../error/handleZodError"));
 const globalErrorHandler = (err, req, res, next) => {
@@ -34,12 +33,6 @@ const globalErrorHandler = (err, req, res, next) => {
     }
     else if ((err === null || err === void 0 ? void 0 : err.name) === 'CastError') {
         const simplifiedError = (0, handleCastError_1.default)(err);
-        statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;
-        message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
-        errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
-    }
-    else if ((err === null || err === void 0 ? void 0 : err.code) === 11000) {
-        const simplifiedError = (0, handleDuplicateError_1.default)(err);
         statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;
         message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
         errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;

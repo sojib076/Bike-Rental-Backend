@@ -38,7 +38,6 @@ const userRegister = async (payload: TuserRegister) => {
     // const hashPassword = payload.password;
     const hashPassword = await bcrypt.hash(payload.password, 12);
     payload.password = hashPassword;
-    payload.role = 'user';
     const result = await User.create(payload);
     const removePassword = User.removePassword(result);
     return removePassword;

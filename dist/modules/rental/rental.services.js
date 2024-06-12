@@ -69,7 +69,13 @@ const returnRental = (id) => __awaiter(void 0, void 0, void 0, function* () {
         throw new AppError_1.default(500, 'Error returning rental');
     }
 });
+const getAllRentals = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req.user;
+    const result = yield rental_model_1.RentalModel.find({ userId: user.userId });
+    return result;
+});
 exports.rentalService = {
     createRental,
-    returnRental
+    returnRental,
+    getAllRentals
 };

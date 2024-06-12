@@ -13,4 +13,5 @@ const user_constant_1 = require("../user/user.constant");
 const router = (0, express_1.Router)();
 router.post('/', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), (0, validateRequest_1.default)(rental_validation_1.rentalSchema), rental_controller_1.rentalController.createRental);
 router.put('/:id/return', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), rental_controller_1.rentalController.returnRental);
+router.get('/', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), rental_controller_1.rentalController.getAllRentals);
 exports.rentalRoutes = router;

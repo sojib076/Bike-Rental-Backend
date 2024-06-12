@@ -29,12 +29,30 @@ const returnRental = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(vo
     const result = yield rental_services_1.rentalService.returnRental(req.params.id);
     (0, sendResponse_1.default)(res, {
         data: result,
-        message: 'Rental returned successfully',
+        message: 'Bike returned successfully',
+        statusCode: 200,
+        success: true
+    });
+}));
+const getAllRentals = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield rental_services_1.rentalService.getAllRentals(req);
+    if (result.length === 0) {
+        return (0, sendResponse_1.default)(res, {
+            data: result,
+            message: 'No Data Found',
+            statusCode: 404,
+            success: false
+        });
+    }
+    (0, sendResponse_1.default)(res, {
+        data: result,
+        message: 'All Rentals',
         statusCode: 200,
         success: true
     });
 }));
 exports.rentalController = {
     createRental,
-    returnRental
+    returnRental,
+    getAllRentals
 };
