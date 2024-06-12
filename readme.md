@@ -22,25 +22,61 @@ The backend is hosted on vercel. URL : [Bike Rental Backend ](https://bike-renta
  ## Deatils on routes
 ```json
  
+  {
   "routes": {
     "User Routes": {
-      "Sign Up": "/api/auth/signup",
-      "Login": "/api/auth/login",
-      "Get Profile": "/api/users/me",
-      "Update Profile": "/api/users/me"
+      "Sign Up": {
+        "method": "POST",
+        "route": "/api/auth/signup"
+      },
+      "Login": {
+        "method": "POST",
+        "route": "/api/auth/login"
+      },
+      "Get Profile": {
+        "method": "GET",
+        "route": "/api/users/me"
+      },
+      "Update Profile": {
+        "method": "PUT",
+        "route": "/api/users/me"
+      }
     },
     "Bike Routes": {
-      "Create Bike": "/api/bikes",
-      "Get All Bikes": "/api/bikes",
-      "Update Bike": "/api/bikes/:id",
-      "Delete Bike": "/api/bikes/:id"
+      "Create Bike": {
+        "method": "POST",
+        "route": "/api/bikes"
+      },
+      "Get All Bikes": {
+        "method": "GET",
+        "route": "/api/bikes"
+      },
+      "Update Bike": {
+        "method": "PUT",
+        "route": "/api/bikes/:id"
+      },
+      "Delete Bike": {
+        "method": "DELETE",
+        "route": "/api/bikes/:id"
+      }
     },
     "Rental Routes": {
-      "Create Rental": "/api/rentals",
-      "Return Bike": "/api/rentals/:id/return",
-      "Get All Rentals for User": "/api/rentals"
+      "Create Rental": {
+        "method": "POST",
+        "route": "/api/rentals"
+      },
+      "Return Bike": {
+        "method": "PUT",
+        "route": "/api/rentals/:id/return"
+      },
+      "Get All Rentals for User": {
+        "method": "GET",
+        "route": "/api/rentals"
+      }
     }
   }
+}
+
 
 ```
 
