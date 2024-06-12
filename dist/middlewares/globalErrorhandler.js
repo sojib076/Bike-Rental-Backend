@@ -13,7 +13,7 @@ const globalErrorHandler = (err, req, res, next) => {
     //setting default values
     let statusCode = 500;
     let message = 'Something went wrong!';
-    let errorSources = [
+    let errorMessages = [
         {
             path: '',
             message: 'Something went wrong',
@@ -23,24 +23,24 @@ const globalErrorHandler = (err, req, res, next) => {
         const simplifiedError = (0, handleZodError_1.default)(err);
         statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;
         message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
-        errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSource;
+        errorMessages = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSource;
     }
     else if ((err === null || err === void 0 ? void 0 : err.name) === 'ValidationError') {
         const simplifiedError = (0, handleValidationError_1.default)(err);
         statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;
         message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
-        errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
+        errorMessages = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorMessages;
     }
     else if ((err === null || err === void 0 ? void 0 : err.name) === 'CastError') {
         const simplifiedError = (0, handleCastError_1.default)(err);
         statusCode = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode;
         message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
-        errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
+        errorMessages = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorMessages;
     }
     else if (err instanceof AppError_1.default) {
         statusCode = err === null || err === void 0 ? void 0 : err.statusCode;
         message = err.message;
-        errorSources = [
+        errorMessages = [
             {
                 path: '',
                 message: err === null || err === void 0 ? void 0 : err.message,
@@ -49,7 +49,7 @@ const globalErrorHandler = (err, req, res, next) => {
     }
     else if (err instanceof Error) {
         message = err.message;
-        errorSources = [
+        errorMessages = [
             {
                 path: '',
                 message: err === null || err === void 0 ? void 0 : err.message,
@@ -60,7 +60,7 @@ const globalErrorHandler = (err, req, res, next) => {
     return res.status(statusCode).json({
         success: false,
         message,
-        errorSources,
+        errorMessages,
         err,
         stack: config_1.default.node_env === 'development' ? err === null || err === void 0 ? void 0 : err.stack : null,
     });
@@ -70,7 +70,7 @@ exports.default = globalErrorHandler;
 /*
 success
 message
-errorSources:[
+errorMessages:[
   path:'',
   message:''
 ]

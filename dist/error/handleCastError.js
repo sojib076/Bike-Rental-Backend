@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const handleCastError = (err) => {
-    const errorSources = [
+    const errorMessages = [
         {
             path: err.path,
             message: err.message,
@@ -11,7 +11,7 @@ const handleCastError = (err) => {
     return {
         statusCode,
         message: 'Invalid ID',
-        errorSources,
+        errorMessages,
     };
 };
 exports.default = handleCastError;
