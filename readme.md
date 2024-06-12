@@ -26,7 +26,6 @@ To test the api here is the admin credentials:
 }
 
 ```
-
 To test the api here is the user credentials:
 ```json
 
@@ -35,6 +34,55 @@ To test the api here is the user credentials:
 "password": "password123"
 }
     
+```
+## file structure in modules
+```bash
+modules
+├── bikes
+│   ├── bike.controller.ts
+│   ├── bike.model.ts
+│   ├── bike.routes.ts
+│   └── bike.valdation.ts
+│   └── bike.services.ts
+├── rentals
+│   ├── rental.controller.ts
+│   ├── rental.model.ts
+│   ├── rental.routes.ts
+│   └── rental.valdation.ts
+│   └── rental.services.ts
+├── users
+│   ├── user.controller.ts
+│   ├── user.model.ts
+│   ├── user.routes.ts
+│   └── user.valdation.ts
+│   └── user.services.ts
+```
+
+
+
+
+
+
+
+## Error Handling
+
+The API has a centralized error handling middleware that catches all errors and sends the error response in the following format:
+    
+    ```json
+    {
+    "status": "error",
+    "message": "error message"
+    }
+    ```
+Error like zod validation error, mongoose validation error, and other errors are handled in the error handling middleware.
+All erors are handel in global error handler middleware.
+
+
+```json
+{
+  "status": "error",
+  "message": "error message"
+}
 ```
 
 
