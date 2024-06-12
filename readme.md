@@ -6,7 +6,7 @@ Technology Stack:
 - ODM & Validation Library: Zod, Mongoose for MongoDB
 
 # Bike Rental System Backend
- I have created a Bike Rental System Backend using express.js and mongoes. The backend is hosted on vercel. The api is secured using JWT. The api routes require a token to access the data. there are two types of users: Admin and User. The admin has access to all the routes while the user has access to only the routes that are only available to users.
+ I have created a Bike Rental System Backend using express.js and mongoes and typescript. The backend is hosted on vercel. The api is secured using JWT. The api routes require a token to access the data. there are two types of users: Admin and User. The admin has access to all the routes while the user has access to only the routes that are only available to users.
  Without the token, the user will not be able to access the data and receive a 401 error and with an invalid token, the user will receive a 403 error.  For those who are not admins but try to access the admin routes, they will receive a 403 error that they are not authorized to access the data. 
   The api has the following endpoints:
  
@@ -17,6 +17,32 @@ API Endpoints:
 - /api/rentals
 
 The backend is hosted on vercel. URL : [Bike Rental Backend ](https://bike-rental-backend-delta.vercel.app)
+
+ more deatils on route are 
+ ## Deatils on routes
+```json
+ 
+  "routes": {
+    "User Routes": {
+      "Sign Up": "/api/auth/signup",
+      "Login": "/api/auth/login",
+      "Get Profile": "/api/users/me",
+      "Update Profile": "/api/users/me"
+    },
+    "Bike Routes": {
+      "Create Bike": "/api/bikes",
+      "Get All Bikes": "/api/bikes",
+      "Update Bike": "/api/bikes/:id",
+      "Delete Bike": "/api/bikes/:id"
+    },
+    "Rental Routes": {
+      "Create Rental": "/api/rentals",
+      "Return Bike": "/api/rentals/:id/return",
+      "Get All Rentals for User": "/api/rentals"
+    }
+  }
+
+```
 
 To test the api here is the admin credentials:
 ```json
