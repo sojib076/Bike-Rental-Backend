@@ -25,12 +25,19 @@ const updateBike = async (id:string,body:Partial<TBike>) => {
     return result;
 };
 const deleteBike = async (id:string) => {
-    const findbyidandupdateAvailable = await BikeModel.findByIdAndUpdate(id,{isAvailable:false},{new:true});
-    if (!findbyidandupdateAvailable) {
-        throw new AppError(httpStatus.NOT_FOUND, 'Bike not found')
+    const updatedBike = await BikeModel.findByIdAndUpdate(id, { isAvailable: false }, { new: true });
+    if (!updatedBike) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Bike not found');
     }
-    
-    return findbyidandupdateAvailable;
+
+    // Step 2: Delete the bike from the database
+    const deletedBike = await BikeModel.findByIdAndDelete(id);
+    if (!deletedBike) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Bike not found during deletion');
+    }
+
+    // Step 3: Return the deleted bike's data
+    return deletedBike;
 };
 
 export const bikeService = {

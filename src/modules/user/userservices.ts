@@ -12,13 +12,18 @@ const userLogin = async (payload: TuserLogin) => {
     if (!findUser) {
         throw new AppError(httpStatus.NOT_FOUND, 'User not found');
     }
-    const isMatch = await bcrypt.compare(payload.password, findUser.password);
+    const isMatch = await bcrypt.compare(payload.password, findUser.password); // compare the password
+
+    // if password is incorrect it will throw an error
     if (!isMatch) {
-        throw new AppError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
+        throw new AppError(httpStatus.UNAUTHORIZED, 'Password is incorrect'); 
     }
+    // remove the password from the user object
     const removePassword = findUser.toObject();
-    const { password, ...user } = removePassword;
-    console.log(user);
+    const { password, ...user } = removePassword; 
+
+
+     // create a jwt payload
     const jwtPayload = {
         userId: findUser._id,
         email: findUser.email,
@@ -26,7 +31,9 @@ const userLogin = async (payload: TuserLogin) => {
     }
 
     const token = jwt.sign(jwtPayload, config.jwt_secret as string, { expiresIn: '1d' });
-console.log(token);
+
+
+    // return the token and user object
     return {
         token,
         user
@@ -35,7 +42,7 @@ console.log(token);
 
 const userRegister = async (payload: TuserRegister) => {
 
-    // const hashPassword = payload.password;
+    //  hash the password and save the user
     const hashPassword = await bcrypt.hash(payload.password, 12);
     payload.password = hashPassword;
     const result = await User.create(payload);
@@ -44,19 +51,27 @@ const userRegister = async (payload: TuserRegister) => {
 }
 
 const userGetProfile = async (req: Request) => {
+    // get the user from the request user , this user come form auth middleware with jwt payload
     const user = req.user;
+
+    // find the user in the database
     const findUser = await User.findById(user.userId);
+
+    // if user not found throw an error
     if (!findUser) {
         throw new AppError(httpStatus.NOT_FOUND, 'User not found');
     }
+
+    // this function remove the password from the user object
     const removePassword = User.removePassword(findUser);
+
     return removePassword;
 }
 
 const userUpdateProfile = async (req: Request) => {
     const user = req.user;
     const findUser = await User.findById(user.userId);
-    
+
     if (!findUser) { throw new AppError(httpStatus.NOT_FOUND, 'User not found');
     }
 

@@ -17,7 +17,7 @@ const asyncHandler_1 = require("../../utils/asyncHandler");
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const userservices_1 = require("./userservices");
 const userLogin = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield userservices_1.userServices.userLogin(req.body);
+    const result = yield userservices_1.userServices.userLogin(req.body); //req.body is the data sent from the frontend
     const { token, user } = result;
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
@@ -25,16 +25,16 @@ const userLogin = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 
         token: token,
         success: true,
         data: user
-    });
+    }); //  this is the response sent back to the frontend
 }));
 const userRegister = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield userservices_1.userServices.userRegister(req.body);
+    const result = yield userservices_1.userServices.userRegister(req.body); //req.body is the data sent from the frontend
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         message: "User registered successfully",
         success: true,
         data: result
-    });
+    }); //  this is the response sent back to the frontend
 }));
 const userGetProfile = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield userservices_1.userServices.userGetProfile(req);
@@ -55,7 +55,7 @@ const userUpdateProfile = (0, asyncHandler_1.asyncHandler)((req, res) => __await
         message: " Profile updated successfully",
         success: true,
         data: result
-    });
+    }); //  this is the response sent back to the frontend
 }));
 exports.userController = {
     userLogin,

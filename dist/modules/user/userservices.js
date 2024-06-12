@@ -35,27 +35,29 @@ const userLogin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     if (!findUser) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
     }
-    const isMatch = yield bcrypt_1.default.compare(payload.password, findUser.password);
+    const isMatch = yield bcrypt_1.default.compare(payload.password, findUser.password); // compare the password
+    // if password is incorrect it will throw an error
     if (!isMatch) {
         throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'Password is incorrect');
     }
+    // remove the password from the user object
     const removePassword = findUser.toObject();
     const { password } = removePassword, user = __rest(removePassword, ["password"]);
-    console.log(user);
+    // create a jwt payload
     const jwtPayload = {
         userId: findUser._id,
         email: findUser.email,
         role: findUser.role
     };
     const token = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, { expiresIn: '1d' });
-    console.log(token);
+    // return the token and user object
     return {
         token,
         user
     };
 });
 const userRegister = (payload) => __awaiter(void 0, void 0, void 0, function* () {
-    // const hashPassword = payload.password;
+    //  hash the password and save the user
     const hashPassword = yield bcrypt_1.default.hash(payload.password, 12);
     payload.password = hashPassword;
     const result = yield user_model_1.User.create(payload);
@@ -63,11 +65,15 @@ const userRegister = (payload) => __awaiter(void 0, void 0, void 0, function* ()
     return removePassword;
 });
 const userGetProfile = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    // get the user from the request user , this user come form auth middleware with jwt payload
     const user = req.user;
+    // find the user in the database
     const findUser = yield user_model_1.User.findById(user.userId);
+    // if user not found throw an error
     if (!findUser) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
     }
+    // this function remove the password from the user object
     const removePassword = user_model_1.User.removePassword(findUser);
     return removePassword;
 });

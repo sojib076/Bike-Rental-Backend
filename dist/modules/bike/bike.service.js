@@ -33,11 +33,17 @@ const updateBike = (id, body) => __awaiter(void 0, void 0, void 0, function* () 
     return result;
 });
 const deleteBike = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const findbyidandupdateAvailable = yield bike_model_1.BikeModel.findByIdAndUpdate(id, { isAvailable: false }, { new: true });
-    if (!findbyidandupdateAvailable) {
+    const updatedBike = yield bike_model_1.BikeModel.findByIdAndUpdate(id, { isAvailable: false }, { new: true });
+    if (!updatedBike) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Bike not found');
     }
-    return findbyidandupdateAvailable;
+    // Step 2: Delete the bike from the database
+    const deletedBike = yield bike_model_1.BikeModel.findByIdAndDelete(id);
+    if (!deletedBike) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Bike not found during deletion');
+    }
+    // Step 3: Return the deleted bike's data
+    return deletedBike;
 });
 exports.bikeService = {
     createBike,

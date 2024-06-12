@@ -5,13 +5,11 @@ import { ZodError } from 'zod';
 import config from '../config';
 import AppError from '../error/AppError';
 import handleCastError from '../error/handleCastError';
-
 import handleValidationError from '../error/handleValidationError';
 import handleZodError from '../error/handleZodError';
 import { TErrorSources } from '../Interface/Error';
-
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  //setting default values
+
   let statusCode = 500;
   let message = 'Something went wrong!';
   let errorMessages: TErrorSources = [
@@ -55,7 +53,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     ];
   }
 
-  //ultimate return
+
   return res.status(statusCode).json({
     success: false,
     message,
@@ -67,13 +65,3 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
 
 export default globalErrorHandler;
 
-//pattern
-/*
-success
-message
-errorMessages:[
-  path:'',
-  message:''
-]
-stack
-*/

@@ -10,7 +10,6 @@ const handleCastError_1 = __importDefault(require("../error/handleCastError"));
 const handleValidationError_1 = __importDefault(require("../error/handleValidationError"));
 const handleZodError_1 = __importDefault(require("../error/handleZodError"));
 const globalErrorHandler = (err, req, res, next) => {
-    //setting default values
     let statusCode = 500;
     let message = 'Something went wrong!';
     let errorMessages = [
@@ -56,7 +55,6 @@ const globalErrorHandler = (err, req, res, next) => {
             },
         ];
     }
-    //ultimate return
     return res.status(statusCode).json({
         success: false,
         message,
@@ -66,13 +64,3 @@ const globalErrorHandler = (err, req, res, next) => {
     });
 };
 exports.default = globalErrorHandler;
-//pattern
-/*
-success
-message
-errorMessages:[
-  path:'',
-  message:''
-]
-stack
-*/ 
