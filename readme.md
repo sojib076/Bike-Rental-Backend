@@ -106,12 +106,12 @@ modules
 │   ├── bike.routes.ts
 │   └── bike.valdation.ts
 │   └── bike.services.ts
-├── rentals
-│   ├── rental.controller.ts
-│   ├── rental.model.ts
-│   ├── rental.routes.ts
-│   └── rental.valdation.ts
-│   └── rental.services.ts
+├── booking
+│   ├── booking.controller.ts
+│   ├── booking.model.ts
+│   ├── booking.routes.ts
+│   └── booking.valdation.ts
+│   └── booking.services.ts
 ├── users
 │   ├── user.controller.ts
 │   ├── user.model.ts

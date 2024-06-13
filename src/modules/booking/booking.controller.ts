@@ -1,6 +1,6 @@
 import { asyncHandler } from "../../utils/asyncHandler";
 import sendResponse from "../../utils/sendResponse";
-import { rentalService } from "./rental.services";
+import { rentalService } from "./booking.services";
 
 const createRental= asyncHandler(async (req, res) => {
     const result = await rentalService.createRental(req);

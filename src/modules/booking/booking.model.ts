@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { IRental } from "./rental.interface";
+import { IRental } from "./booking.interface";
 
 const RentalSchema = new Schema<IRental>({
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },

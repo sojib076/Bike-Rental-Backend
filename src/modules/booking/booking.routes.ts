@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { rentalController } from "./rental.controller";
+import { rentalController } from "./booking.controller";
 import { auth } from "../../middlewares/auth";
 import validateRequest from "../../middlewares/validateRequest";
-import { rentalSchema } from "./rental.validation";
+import { rentalSchema } from "./booking.validation";
 import { USER_ROLE } from "../user/user.constant";
 
 const router = Router();

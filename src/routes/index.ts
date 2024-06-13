@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {  userRoutes } from "../modules/user/user.routes";
 import { bikeRoutes } from "../modules/bike/bike.routes";
-import { rentalRoutes } from "../modules/rental/rental.routes";
+import { rentalRoutes } from "../modules/booking/booking.routes";
 
 
 

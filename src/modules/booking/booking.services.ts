@@ -1,12 +1,12 @@
 import { Request } from "express";
-import { IRental } from "./rental.interface";
-import { RentalModel } from "./rental.model";
+import { RentalModel } from "./booking.model";
 import { BikeModel } from "../bike/bike.model";
 import { User } from "../user/user.model";
 import AppError from "../../error/AppError";
 import { TBike } from "../bike/bike.interface";
 import mongoose from "mongoose";
 import { date } from "zod";
+import { IRental } from "./booking.interface";
 
 const createRental = async (req: Request) => {
     // get  data from the request body
