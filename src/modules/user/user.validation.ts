@@ -7,8 +7,6 @@ export const userLoginValidation = z.object({
     }),
 });
 
-
-
 export const userRegisterValidation = z.object({
     body: z.object({
       email: z.string().email(),

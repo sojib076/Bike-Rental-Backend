@@ -26,7 +26,8 @@ const createBike = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void
     });
 }));
 const getAllbikes = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield bike_service_1.bikeService.getAllbikes();
+    console.log('hi', req.query.searchTerm);
+    const result = yield bike_service_1.bikeService.getAllbikes(req);
     if (result.length === 0) {
         return (0, sendResponse_1.default)(res, {
             data: result,
@@ -60,9 +61,19 @@ const deleteBike = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void
         message: 'Bike deleted successfully'
     });
 }));
+const getSingleBike = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield bike_service_1.bikeService.getSingleBike(req.params.id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        data: result,
+        success: true,
+        message: 'Bike retrieved successfully'
+    });
+}));
 exports.bikeController = {
     createBike,
     getAllbikes,
     updateBike,
-    deleteBike
+    deleteBike,
+    getSingleBike
 };

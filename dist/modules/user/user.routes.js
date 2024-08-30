@@ -15,4 +15,10 @@ router.post('/login', (0, validateRequest_1.default)(user_validation_1.userLogin
 router.post('/signup', (0, validateRequest_1.default)(user_validation_1.userRegisterValidation), user_controller_1.userController.userRegister); // user register
 router.get('/me', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), user_controller_1.userController.userGetProfile); // get user profile
 router.put('/me', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), (0, validateRequest_1.default)(user_validation_1.updateUserValidation), user_controller_1.userController.userUpdateProfile); // update user profile
+// admin can change user role
+router.put('/:id/role', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), user_controller_1.userController.changeUserRole);
+// admin can get all users
+router.get('/allusers', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), user_controller_1.userController.getAllUsers);
+// admin can delete user
+router.delete('/:id', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), user_controller_1.userController.deleteUser);
 exports.userRoutes = router;

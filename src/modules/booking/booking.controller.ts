@@ -41,11 +41,63 @@ const getAllRentals= asyncHandler(async (req, res) => {
     });
 });
 
+const fullPayment = asyncHandler(async (req, res) => {
+
+    const result = await rentalService.fullPayment(req);
+    sendResponse(res, {
+        data: result,
+        message: 'Full Payment Successful',
+        statusCode: 200,
+        success: true
+    });
+});
+
+const allrentalbike = asyncHandler(async (req, res) => {
+    const result = await rentalService.allrentalbike();
+    if (result.length === 0) {
+        return sendResponse(res, {
+            data: result,
+            message: 'No Data Found',
+            statusCode: 404,
+            success: false
+        });
+    }
+    sendResponse(res, {
+        data: result,
+        message: 'All Rentals',
+        statusCode: 200,
+        success: true
+    });
+});
+
+const getRentalTransaction = asyncHandler(async (req, res) => {
+    const result = await rentalService.getRentalTransaction(req.params.id);
+
+    if (!result) {
+        return sendResponse(res, {
+            data: result,
+            message: 'No Data Found',
+            statusCode: 404,
+            success: false
+        });
+    }
+    sendResponse(res, {
+        data: result,
+        message: 'Rental Transaction',
+        statusCode: 200,
+        success: true
+    });
+});
+
+
 
 
 
 export const rentalController = {
     createRental,
     returnRental,
-    getAllRentals
+    getAllRentals,
+    fullPayment,
+    allrentalbike,
+    getRentalTransaction
 };

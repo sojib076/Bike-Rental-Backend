@@ -7,4 +7,7 @@ export type IRental= {
     returnTime?: Date | null;
     totalCost?: number;
     isReturned?: boolean;
+    paymentId: string;
+   advancedPayment?: boolean;
+   totalPaid?: boolean
   }

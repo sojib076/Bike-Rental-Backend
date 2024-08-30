@@ -13,7 +13,8 @@ const createBike = asyncHandler(async (req, res) => {
 });
 
 const getAllbikes = asyncHandler(async (req, res) => {
-    const result = await bikeService.getAllbikes();
+ console.log('hi',req.query.searchTerm);
+    const result = await bikeService.getAllbikes(req);
     if (result.length === 0) {
         return sendResponse(res, {
             data: result,
@@ -50,11 +51,22 @@ const deleteBike = asyncHandler(async (req, res) => {
     })
 });
 
+const getSingleBike = asyncHandler(async (req, res) => {
+    const result = await bikeService.getSingleBike(req.params.id);
+    sendResponse(res,{
+        statusCode:200,
+        data:result,
+        success:true,
+        message:'Bike retrieved successfully'
+    })
+});
+
 
 
 export const bikeController = {
     createBike,
     getAllbikes,
     updateBike,
-    deleteBike
+    deleteBike,
+    getSingleBike
 }

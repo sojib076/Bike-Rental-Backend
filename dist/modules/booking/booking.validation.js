@@ -4,7 +4,7 @@ exports.rentalSchema = void 0;
 const zod_1 = require("zod");
 exports.rentalSchema = zod_1.z.object({
     body: zod_1.z.object({
-        userId: zod_1.z.string().optional(), // Optional if userId is not always required
+        userId: zod_1.z.string().optional(),
         bikeId: zod_1.z.string(),
         startTime: zod_1.z.string().transform((str) => new Date(str)), // Transform string to Date
         returnTime: zod_1.z.string().nullable().optional().transform((str) => str ? new Date(str) : null), // Optional and nullable

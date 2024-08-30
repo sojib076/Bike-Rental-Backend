@@ -8,6 +8,9 @@ const RentalSchema = new mongoose_1.Schema({
     startTime: { type: Date, required: true },
     returnTime: { type: Date, default: null },
     totalCost: { type: Number, default: 0 },
+    totalPaid: { type: Boolean, default: false },
+    paymentId: { type: String, required: true },
+    advancedPayment: { type: Boolean, default: false },
     isReturned: { type: Boolean, default: false }
 });
 // Create and export the Rental model

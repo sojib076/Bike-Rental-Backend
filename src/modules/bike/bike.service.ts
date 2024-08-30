@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import httpStatus from "http-status";
 import AppError from "../../error/AppError";
 import { TBike } from "./bike.interface";
@@ -10,8 +11,15 @@ const createBike = async (body: TBike) => {
     return bike;
 };
 
-const getAllbikes= async()=>{
-    const bikes = await BikeModel.find();
+const getAllbikes= async(req:any)=>{
+    const searchQuery = req.query.searchTerm as string;
+    
+    let query: any = {};
+    if (searchQuery) {
+        query.name = { $regex: searchQuery, $options: 'i' }; // i means case-insensitive
+      }
+
+    const bikes = await BikeModel.find(query);
     return bikes;
 }
 
@@ -40,11 +48,20 @@ const deleteBike = async (id:string) => {
     return deletedBike;
 };
 
+const getSingleBike = async (id: string) => {
+    const bike = await BikeModel.findById(id);
+    if (!bike) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Bike not found');
+    }
+
+    return bike;
+};
 export const bikeService = {
     createBike,
     getAllbikes,
     updateBike,
-    deleteBike
+    deleteBike,
+    getSingleBike
    
 };
 

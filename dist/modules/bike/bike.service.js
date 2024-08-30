@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.bikeService = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const http_status_1 = __importDefault(require("http-status"));
 const AppError_1 = __importDefault(require("../../error/AppError"));
 const bike_model_1 = require("./bike.model");
@@ -20,8 +21,13 @@ const createBike = (body) => __awaiter(void 0, void 0, void 0, function* () {
     const bike = yield bike_model_1.BikeModel.create(body);
     return bike;
 });
-const getAllbikes = () => __awaiter(void 0, void 0, void 0, function* () {
-    const bikes = yield bike_model_1.BikeModel.find();
+const getAllbikes = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    const searchQuery = req.query.searchTerm;
+    let query = {};
+    if (searchQuery) {
+        query.name = { $regex: searchQuery, $options: 'i' }; // i means case-insensitive
+    }
+    const bikes = yield bike_model_1.BikeModel.find(query);
     return bikes;
 });
 const updateBike = (id, body) => __awaiter(void 0, void 0, void 0, function* () {
@@ -45,9 +51,17 @@ const deleteBike = (id) => __awaiter(void 0, void 0, void 0, function* () {
     // Step 3: Return the deleted bike's data
     return deletedBike;
 });
+const getSingleBike = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const bike = yield bike_model_1.BikeModel.findById(id);
+    if (!bike) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Bike not found');
+    }
+    return bike;
+});
 exports.bikeService = {
     createBike,
     getAllbikes,
     updateBike,
-    deleteBike
+    deleteBike,
+    getSingleBike
 };

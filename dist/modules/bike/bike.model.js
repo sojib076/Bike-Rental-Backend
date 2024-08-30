@@ -10,6 +10,7 @@ const BikeSchema = new mongoose_1.Schema({
     cc: { type: Number, required: true },
     year: { type: Number, required: true },
     model: { type: String, required: true },
-    brand: { type: String, required: true }
+    brand: { type: String, required: true },
+    imgageurl: { type: String, required: true }
 });
 exports.BikeModel = (0, mongoose_1.model)('Bike', BikeSchema);

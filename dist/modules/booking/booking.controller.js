@@ -51,8 +51,54 @@ const getAllRentals = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(v
         success: true
     });
 }));
+const fullPayment = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_services_1.rentalService.fullPayment(req);
+    (0, sendResponse_1.default)(res, {
+        data: result,
+        message: 'Full Payment Successful',
+        statusCode: 200,
+        success: true
+    });
+}));
+const allrentalbike = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_services_1.rentalService.allrentalbike();
+    if (result.length === 0) {
+        return (0, sendResponse_1.default)(res, {
+            data: result,
+            message: 'No Data Found',
+            statusCode: 404,
+            success: false
+        });
+    }
+    (0, sendResponse_1.default)(res, {
+        data: result,
+        message: 'All Rentals',
+        statusCode: 200,
+        success: true
+    });
+}));
+const getRentalTransaction = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_services_1.rentalService.getRentalTransaction(req.params.id);
+    if (!result) {
+        return (0, sendResponse_1.default)(res, {
+            data: result,
+            message: 'No Data Found',
+            statusCode: 404,
+            success: false
+        });
+    }
+    (0, sendResponse_1.default)(res, {
+        data: result,
+        message: 'Rental Transaction',
+        statusCode: 200,
+        success: true
+    });
+}));
 exports.rentalController = {
     createRental,
     returnRental,
-    getAllRentals
+    getAllRentals,
+    fullPayment,
+    allrentalbike,
+    getRentalTransaction
 };

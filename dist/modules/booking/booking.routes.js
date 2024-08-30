@@ -14,4 +14,7 @@ const router = (0, express_1.Router)();
 router.post('/', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), (0, validateRequest_1.default)(booking_validation_1.rentalSchema), booking_controller_1.rentalController.createRental);
 router.put('/:id/return', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), booking_controller_1.rentalController.returnRental);
 router.get('/', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin, user_constant_1.USER_ROLE.user), booking_controller_1.rentalController.getAllRentals);
+router.get('/allrentalbike', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), booking_controller_1.rentalController.allrentalbike);
+router.post('/fullpayment', booking_controller_1.rentalController.fullPayment);
+router.get('/trans/:id', (0, auth_1.auth)(user_constant_1.USER_ROLE.user), booking_controller_1.rentalController.getRentalTransaction);
 exports.rentalRoutes = router;

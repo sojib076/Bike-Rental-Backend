@@ -57,9 +57,41 @@ const userUpdateProfile = (0, asyncHandler_1.asyncHandler)((req, res) => __await
         data: result
     }); //  this is the response sent back to the frontend
 }));
+// admin can change user role
+const changeUserRole = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield userservices_1.userServices.changeUserRole(req.params.id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "User role updated successfully",
+        success: true,
+        data: result
+    });
+}));
+// getAllUsers
+const getAllUsers = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield userservices_1.userServices.getAllUsers();
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "All users retrieved successfully",
+        success: true,
+        data: result
+    }); //  this is the response sent back to the frontend
+}));
+const deleteUser = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield userservices_1.userServices.deleteUser(req.params.id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        message: "User deleted successfully",
+        success: true,
+        data: result
+    }); //  this is the response sent back to the frontend
+}));
 exports.userController = {
     userLogin,
     userRegister,
     userGetProfile,
-    userUpdateProfile
+    userUpdateProfile,
+    changeUserRole,
+    getAllUsers,
+    deleteUser
 };

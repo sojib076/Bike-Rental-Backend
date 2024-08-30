@@ -50,11 +50,43 @@ const userUpdateProfile = asyncHandler(async (req, res) => {
     }) //  this is the response sent back to the frontend
 });
 
+// admin can change user role
+const changeUserRole = asyncHandler(async (req, res) => {
+    const result = await userServices.changeUserRole(req.params.id);
+    sendResponse(res,{
+        statusCode:200,
+        message:"User role updated successfully",
+        success:true,
+        data:result
+    }) 
+});
+// getAllUsers
+const getAllUsers = asyncHandler(async (req, res) => {
+    const result = await userServices.getAllUsers();
+    sendResponse(res,{
+        statusCode:200,
+        message:"All users retrieved successfully",
+        success:true,
+        data:result
+    }) //  this is the response sent back to the frontend
+});
+const deleteUser = asyncHandler(async (req, res) => {
+    const result = await userServices.deleteUser(req.params.id);
+    sendResponse(res,{
+        statusCode:200,
+        message:"User deleted successfully",
+        success:true,
+        data:result
+    }) //  this is the response sent back to the frontend
+});
 export const userController = {
     userLogin,
     userRegister,
     userGetProfile,
-    userUpdateProfile
+    userUpdateProfile,
+    changeUserRole,
+    getAllUsers,
+    deleteUser
 }
 
 

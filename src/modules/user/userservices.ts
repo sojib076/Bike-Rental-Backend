@@ -86,12 +86,44 @@ const userUpdateProfile = async (req: Request) => {
     return removePassword;
 }
 
+// admin can change user role
+const changeUserRole = async (id: string) => {
+    const find = await User.findById(id);
+    console.log(find,id);
+    console.log(find);
+    if (!find) {
+        throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    }
+    const update = await User.findByIdAndUpdate(id, { role: 'admin' }, { new: true });
+    if (!update) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Error updating user role');
+    }
 
+}
+const getAllUsers = async () => {
+    const users = await User.find();
+    return users;
+}
+const deleteUser = async (id: string) => {
+    const find = await User.findById(id);
+    if (!find) {
+        throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    }
+    const remove = await User.findByIdAndDelete(id);
+    if (!remove) {
+        throw new AppError(httpStatus.NOT_FOUND, 'Error deleting user');
+    }
+
+
+}
 
 export const userServices = {
     userLogin,
     userRegister,
     userGetProfile,
-    userUpdateProfile
+    userUpdateProfile,
+    changeUserRole,
+    getAllUsers,
+    deleteUser
 
 }

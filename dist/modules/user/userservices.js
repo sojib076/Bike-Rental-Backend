@@ -91,9 +91,39 @@ const userUpdateProfile = (req) => __awaiter(void 0, void 0, void 0, function* (
     const removePassword = user_model_1.User.removePassword(updatedUser);
     return removePassword;
 });
+// admin can change user role
+const changeUserRole = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const find = yield user_model_1.User.findById(id);
+    console.log(find, id);
+    console.log(find);
+    if (!find) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
+    }
+    const update = yield user_model_1.User.findByIdAndUpdate(id, { role: 'admin' }, { new: true });
+    if (!update) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Error updating user role');
+    }
+});
+const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
+    const users = yield user_model_1.User.find();
+    return users;
+});
+const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const find = yield user_model_1.User.findById(id);
+    if (!find) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
+    }
+    const remove = yield user_model_1.User.findByIdAndDelete(id);
+    if (!remove) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Error deleting user');
+    }
+});
 exports.userServices = {
     userLogin,
     userRegister,
     userGetProfile,
-    userUpdateProfile
+    userUpdateProfile,
+    changeUserRole,
+    getAllUsers,
+    deleteUser
 };

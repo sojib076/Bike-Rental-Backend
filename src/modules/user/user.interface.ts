@@ -10,7 +10,7 @@ export type TuserLogin= {
 
   
   export type TuserRegister = {
-      name: string;
+    name: string;
   email: string;
   password: string;
   phone: string;
