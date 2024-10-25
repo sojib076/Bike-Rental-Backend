@@ -25,10 +25,14 @@ const getAllbikes = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const searchQuery = req.query.searchTerm;
     let query = {};
     if (searchQuery) {
-        query.name = { $regex: searchQuery, $options: 'i' }; // i means case-insensitive
+        query.name = { $regex: searchQuery, $options: 'i' };
     }
     const bikes = yield bike_model_1.BikeModel.find(query);
-    return bikes;
+    if (!bikes) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'No bikes found');
+    }
+    const fillterQunatity = bikes.filter((bike) => bike.quantity > 0);
+    return fillterQunatity;
 });
 const updateBike = (id, body) => __awaiter(void 0, void 0, void 0, function* () {
     const bike = yield bike_model_1.BikeModel.findById(id);

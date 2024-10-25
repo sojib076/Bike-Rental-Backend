@@ -3,6 +3,7 @@ import {  userRoutes } from "../modules/user/user.routes";
 import { bikeRoutes } from "../modules/bike/bike.routes";
 import { rentalRoutes } from "../modules/booking/booking.routes";
 import { paymentRoutes } from "../modules/payment/payment.routes";
+import { reviewsRoute } from "../modules/reviews/reviews.route";
 
 
 
@@ -28,6 +29,9 @@ const moduleRoutes = [
   {
     path:'/payment',
     route:paymentRoutes
+  },{
+    path:'/reviews',
+    route:reviewsRoute
   }
 ];
 

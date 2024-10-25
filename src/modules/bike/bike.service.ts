@@ -16,11 +16,15 @@ const getAllbikes= async(req:any)=>{
     
     let query: any = {};
     if (searchQuery) {
-        query.name = { $regex: searchQuery, $options: 'i' }; // i means case-insensitive
+        query.name = { $regex: searchQuery, $options: 'i' }; 
       }
 
     const bikes = await BikeModel.find(query);
-    return bikes;
+    if (!bikes) {
+        throw new AppError(httpStatus.NOT_FOUND, 'No bikes found');
+    }
+    const fillterQunatity = bikes.filter((bike)=>bike.quantity>0)
+    return fillterQunatity;
 }
 
 const updateBike = async (id:string,body:Partial<TBike>) => {

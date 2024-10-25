@@ -10,7 +10,11 @@ const BikeSchema = new Schema< TBike>({
     year: { type: Number, required: true },
     model: { type: String, required: true },
     brand: { type: String, required: true },
-    imgageurl: { type: String, required: true }
+    imgageurl: { type: String, required: true },
+    quantity: { type: Number, 
+        default: 10,
+    },
+
 });
 
 export const  BikeModel = model<TBike>('Bike', BikeSchema);

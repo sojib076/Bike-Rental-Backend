@@ -10,4 +10,6 @@ export type IRental= {
     paymentId: string;
    advancedPayment?: boolean;
    totalPaid?: boolean
+   reviewAdded?:boolean
+   quantity:number
   }

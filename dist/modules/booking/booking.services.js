@@ -19,15 +19,13 @@ const AppError_1 = __importDefault(require("../../error/AppError"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const payment_utilis_1 = require("../payment/payment.utilis");
 const createRental = (req) => __awaiter(void 0, void 0, void 0, function* () {
-    // get  data from the request body
     const rental = req.body;
-    console.log(rental);
+    const RequestQuantity = parseInt(req.body.quantity);
     rental.userId = req.user.userId;
-    // find the bike by id
     const findbike = yield bike_model_1.BikeModel.findById(rental.bikeId);
-    if (!(findbike === null || findbike === void 0 ? void 0 : findbike.isAvailable))
+    console.log(findbike === null || findbike === void 0 ? void 0 : findbike.quantity);
+    if ((findbike === null || findbike === void 0 ? void 0 : findbike.quantity) === 0)
         throw new AppError_1.default(400, 'BIke is Already Rented');
-    // create a transaction id
     const paymentInfo = {
         transactionId: "pay_" + Math.floor(Math.random() * 1000000000).toString(),
         amount: '100',
@@ -36,11 +34,15 @@ const createRental = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const session = yield mongoose_1.default.startSession();
     try {
         session.startTransaction();
-        // set the bike to not available
-        const setbikeavailable = yield bike_model_1.BikeModel.findByIdAndUpdate(rental.bikeId, { isAvailable: true });
+        if (!findbike || findbike.quantity === undefined) {
+            throw new AppError_1.default(400, 'Bike not found or quantity is undefined');
+        }
+        const setbikeavailable = yield bike_model_1.BikeModel.findByIdAndUpdate(rental.bikeId, {
+            isAvailable: true,
+            quantity: findbike.quantity - RequestQuantity
+        }, { session });
         if (!setbikeavailable)
             throw new AppError_1.default(500, 'Error updating bike availability');
-        // create a rental with session 
         const result = yield booking_model_1.RentalModel.create([
             {
                 userId: rental.userId,
@@ -49,14 +51,13 @@ const createRental = (req) => __awaiter(void 0, void 0, void 0, function* () {
                 isReturned: false,
                 paymentId: paymentInfo.transactionId,
                 advancedPayment: false,
-                totalPaid: false
+                totalPaid: false,
+                quantity: RequestQuantity
             }
         ], { session: session });
         if (!result)
             throw new AppError_1.default(500, 'Error creating rental');
-        // commit the transaction
         yield session.commitTransaction();
-        // end the session
         session.endSession();
         return payment;
     }
@@ -71,29 +72,24 @@ const returnRental = (id) => __awaiter(void 0, void 0, void 0, function* () {
     if (!findRentalBike)
         throw new AppError_1.default(404, 'Rental not found');
     const bike = yield bike_model_1.BikeModel.findById(findRentalBike === null || findRentalBike === void 0 ? void 0 : findRentalBike.bikeId);
-    console.log(bike);
     if (!bike)
         throw new AppError_1.default(404, 'Bike not found');
-    // start a session
     const session = yield mongoose_1.default.startSession();
     try {
-        // start a transaction
         session.startTransaction();
-        // get the start time of the rental
         const startTime = new Date(findRentalBike.startTime);
-        // set the return time to the current time
         const returnTime = new Date();
-        // calculate the duration in hours
         const durationInHours = Math.ceil((returnTime.getTime() - startTime.getTime()) / (1000 * 60 * 60)); // 
         const pricePerHour = bike.pricePerHour;
         // calculate the total cost
-        const totalCost = durationInHours * pricePerHour;
-        // update the rental with the return time and total cost and set isReturned to true
+        const totalCost = durationInHours * pricePerHour * ((findRentalBike === null || findRentalBike === void 0 ? void 0 : findRentalBike.quantity) || 1);
         const rentalPriceandTime = yield booking_model_1.RentalModel.findByIdAndUpdate(id, { totalCost: totalCost, isReturned: true,
             returnTime: returnTime
         }, { new: true }).session(session);
-        // sesstion used to make sure the transaction is more secure
-        const setbikeavailable = yield bike_model_1.BikeModel.findByIdAndUpdate(findRentalBike.bikeId, { isAvailable: true }, session);
+        const setbikeavailable = yield bike_model_1.BikeModel.findByIdAndUpdate(findRentalBike.bikeId, {
+            isAvailable: true,
+            quantity: bike.quantity + findRentalBike.quantity
+        }, session);
         if (!setbikeavailable)
             throw new AppError_1.default(500, 'Error updating bike availability');
         yield session.commitTransaction();
@@ -108,7 +104,9 @@ const returnRental = (id) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getAllRentals = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.user;
-    const result = yield booking_model_1.RentalModel.find({ userId: user.userId });
+    const result = yield booking_model_1.RentalModel.find({ userId: user.userId })
+        .populate('bikeId', 'name')
+        .populate('userId', 'name');
     return result;
 });
 const fullPayment = (req) => __awaiter(void 0, void 0, void 0, function* () {

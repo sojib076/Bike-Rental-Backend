@@ -14,6 +14,7 @@ const createRental= asyncHandler(async (req, res) => {
 });
 
 const returnRental= asyncHandler(async (req, res) => {
+    
     const result = await rentalService.returnRental(req.params.id);
     sendResponse(res, {
         data: result,

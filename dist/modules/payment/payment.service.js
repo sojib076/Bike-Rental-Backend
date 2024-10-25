@@ -24,34 +24,15 @@ const confirmationService = (id) => __awaiter(void 0, void 0, void 0, function* 
             // find by paymentId and set totalPaid to true
             yield booking_model_1.RentalModel.findOneAndUpdate({ paymentId: removetheLastDfromId }, { totalPaid: true });
             return `
-            <html>
-            <head>
-                <title>Payment Successful</title>
-                <style>
-                    .button {
-                        display: inline-block;
-                        padding: 10px 20px;
-                        margin: 20px;
-                        font-size: 16px;
-                        color: #fff;
-                        background-color: #007bff;
-                        text-decoration: none;
-                        border-radius: 5px;
-                        text-align: center;
-                    }
-                    .button:hover {
-                        background-color: #0056b3;
-                    }
-                </style>
-            </head>
-            <body>
-                <>Payment Successful</h1>
-                <p>Thank you for your payment</p>
-                <a href="https://bike-rental-tau.vercel.app/" class="button">Go to Home</a>
-            </body>
-            </html>
-             
-             `;
+        <html>
+        <head>
+            <title>Payment Successful</title>
+        </head>
+        <body>
+            <h1>Payment Successful</h1>
+            <p>Thank you for your payment</p>
+        </body>
+        </html>`;
         }
     }
     // If advancePayment is not true, set it to true
@@ -83,7 +64,7 @@ const confirmationService = (id) => __awaiter(void 0, void 0, void 0, function* 
     </style>
 </head>
 <body>
-    <>Payment Successful</h1>
+    <h1>Payment Successful</h1>
     <p>Thank you for your payment</p>
     <a href="https://bike-rental-tau.vercel.app/" class="button">Go to Home</a>
 </body>

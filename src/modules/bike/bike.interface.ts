@@ -8,4 +8,5 @@ export type TBike ={
     model: string;
     brand: string;
     imgageurl: string;
+    quantity: number;
 }

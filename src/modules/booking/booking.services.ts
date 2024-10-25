@@ -7,17 +7,16 @@ import { IRental } from "./booking.interface";
 import { initiatePayment } from "../payment/payment.utilis";
 
 const createRental = async (req: Request) => {
-    // get  data from the request body
     const rental: IRental = req.body;
-     console.log(rental);
-
+    const RequestQuantity = parseInt(req.body.quantity);
+   
     rental.userId = req.user.userId;
-    // find the bike by id
-    const findbike = await BikeModel.findById(rental.bikeId);
-    if (!findbike?.isAvailable) throw new AppError(400, 'BIke is Already Rented');
-
     
-    // create a transaction id
+    const findbike = await BikeModel.findById(rental.bikeId);
+    console.log(findbike?.quantity);
+    if (findbike?.quantity===0) throw new AppError(400, 'BIke is Already Rented');
+
+   
     const paymentInfo = {
 
          transactionId :"pay_" + Math.floor(Math.random() * 1000000000).toString(),
@@ -25,24 +24,24 @@ const createRental = async (req: Request) => {
     
     }
      
-    
-    
-
     const payment = await initiatePayment(paymentInfo);
-
-
-
     const session = await mongoose.startSession();
 
 
     try {
         session.startTransaction();
-        // set the bike to not available
-        const setbikeavailable = await BikeModel.findByIdAndUpdate(rental.bikeId, { isAvailable: true });
+        if (!findbike || findbike.quantity === undefined) {
+            throw new AppError(400, 'Bike not found or quantity is undefined');
+        }
+
+        const setbikeavailable = await BikeModel.findByIdAndUpdate(rental.bikeId, { 
+            isAvailable: true,
+            quantity: findbike.quantity - RequestQuantity 
+        }, { session });
 
         if (!setbikeavailable) throw new AppError(500, 'Error updating bike availability');
 
-        // create a rental with session 
+       
         const result = await RentalModel.create([
             {
                 userId: rental.userId,
@@ -51,16 +50,18 @@ const createRental = async (req: Request) => {
                 isReturned: false,
                 paymentId: paymentInfo.transactionId,
                 advancedPayment: false,
-                totalPaid: false
+                totalPaid: false,
+                quantity: RequestQuantity
+
             }
 
         ], { session: session });
 
         if (!result) throw new AppError(500, 'Error creating rental');
 
-        // commit the transaction
+     
         await session.commitTransaction();
-        // end the session
+     
         session.endSession();
         return payment;
     } catch (error) {
@@ -74,41 +75,44 @@ const createRental = async (req: Request) => {
 
 const returnRental = async (id: string) => {
     const findRentalBike = await RentalModel.findById(id);
+
     if (!findRentalBike) throw new AppError(404, 'Rental not found');
 
     const bike = await BikeModel.findById(findRentalBike?.bikeId);
-    console.log(bike);
+ 
 
     if (!bike) throw new AppError(404, 'Bike not found');
 
-    // start a session
+  
     const session = await mongoose.startSession();
     try {
-        // start a transaction
+      
 
         session.startTransaction();
-        // get the start time of the rental
+      
         const startTime: Date = new Date(findRentalBike.startTime);
-        // set the return time to the current time
+      
         const returnTime: Date = new Date();
 
-        // calculate the duration in hours
+        
         const durationInHours: number = Math.ceil((returnTime.getTime() - startTime.getTime()) / (1000 * 60 * 60)); // 
         const pricePerHour: number = bike.pricePerHour;
        
        
         // calculate the total cost
-        const totalCost: number = durationInHours * pricePerHour;
-
-        // update the rental with the return time and total cost and set isReturned to true
+        const totalCost: number = durationInHours * pricePerHour * (findRentalBike?.quantity || 1);
+        
         const rentalPriceandTime = await RentalModel.findByIdAndUpdate(id, {  totalCost: totalCost, isReturned: true ,
 
             returnTime: returnTime
          }
             , { new: true },).session(session);
-        // sesstion used to make sure the transaction is more secure
+        
 
-        const setbikeavailable = await BikeModel.findByIdAndUpdate(findRentalBike.bikeId, { isAvailable: true }, session);
+        const setbikeavailable = await BikeModel.findByIdAndUpdate(findRentalBike.bikeId, { 
+            isAvailable: true,
+            quantity: bike.quantity + findRentalBike.quantity
+         }, session);
         if (!setbikeavailable) throw new AppError(500, 'Error updating bike availability');
         await session.commitTransaction();
         session.endSession();
@@ -122,7 +126,9 @@ const returnRental = async (id: string) => {
 }
 const getAllRentals = async (req: Request) => {
     const user = req.user;
-    const result = await RentalModel.find({ userId: user.userId });
+    const result = await RentalModel.find({ userId: user.userId })
+        .populate('bikeId', 'name')
+        .populate('userId', 'name');
 
     return result;
 };

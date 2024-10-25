@@ -10,7 +10,9 @@ const RentalSchema = new Schema<IRental>({
     totalPaid : { type: Boolean, default: false },
     paymentId: { type: String, required: true },
     advancedPayment: { type: Boolean, default: false },
-    isReturned: { type: Boolean, default: false }
+    isReturned: { type: Boolean, default: false },
+    reviewAdded:{ type: Boolean, default: false },
+    quantity:{type:Number,required:true}
   },);
   
   // Create and export the Rental model

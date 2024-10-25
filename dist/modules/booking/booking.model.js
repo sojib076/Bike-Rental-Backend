@@ -11,7 +11,9 @@ const RentalSchema = new mongoose_1.Schema({
     totalPaid: { type: Boolean, default: false },
     paymentId: { type: String, required: true },
     advancedPayment: { type: Boolean, default: false },
-    isReturned: { type: Boolean, default: false }
+    isReturned: { type: Boolean, default: false },
+    reviewAdded: { type: Boolean, default: false },
+    quantity: { type: Number, required: true }
 });
 // Create and export the Rental model
 exports.RentalModel = (0, mongoose_1.model)('Rental', RentalSchema);
