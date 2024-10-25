@@ -91,6 +91,26 @@ const getRentalTransaction = asyncHandler(async (req, res) => {
 });
 
 
+    const  rentalPayment = asyncHandler(async (req, res) => {
+        const result = await rentalService.rentalPayment();
+        if (result.length === 0) {
+            return sendResponse(res, {
+                data: result,
+                message: 'No Data Found',
+                statusCode: 404,
+                success: false
+            });
+        }
+        sendResponse(res, {
+            data: result,
+            message: 'All Rentals',
+            statusCode: 200,
+            success: true
+        });
+
+    }
+    );
+
 
 
 
@@ -100,5 +120,6 @@ export const rentalController = {
     getAllRentals,
     fullPayment,
     allrentalbike,
-    getRentalTransaction
+    getRentalTransaction,
+    rentalPayment
 };

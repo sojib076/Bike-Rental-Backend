@@ -17,4 +17,5 @@ router.get('/', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin, user_constant_
 router.get('/allrentalbike', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), booking_controller_1.rentalController.allrentalbike);
 router.post('/fullpayment', booking_controller_1.rentalController.fullPayment);
 router.get('/trans/:id', (0, auth_1.auth)(user_constant_1.USER_ROLE.user), booking_controller_1.rentalController.getRentalTransaction);
+router.get('/rentalpayment', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), booking_controller_1.rentalController.rentalPayment);
 exports.rentalRoutes = router;

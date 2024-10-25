@@ -132,11 +132,18 @@ const getRentalTransaction = (id) => __awaiter(void 0, void 0, void 0, function*
     console.log(result);
     return result;
 });
+const rentalPayment = () => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield booking_model_1.RentalModel.find({ totalPaid: false })
+        .populate('userId', 'name')
+        .populate('bikeId', 'name');
+    return result;
+});
 exports.rentalService = {
     createRental,
     returnRental,
     getAllRentals,
     fullPayment,
     allrentalbike,
-    getRentalTransaction
+    getRentalTransaction,
+    rentalPayment
 };

@@ -13,8 +13,10 @@ router.post('/', auth(USER_ROLE.admin,USER_ROLE.user), validateRequest(rentalSch
 router.put('/:id/return', auth(USER_ROLE.admin), rentalController.returnRental);
 router.get('/', auth(USER_ROLE.admin,USER_ROLE.user), rentalController.getAllRentals);
 router.get('/allrentalbike', auth(USER_ROLE.admin), rentalController.allrentalbike);
-
 router.post('/fullpayment', rentalController.fullPayment);
 router.get('/trans/:id', auth(USER_ROLE.user) ,rentalController.getRentalTransaction);
+
+
+router.get('/rentalpayment', auth(USER_ROLE.admin), rentalController.rentalPayment);
 
 export const rentalRoutes = router;

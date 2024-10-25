@@ -11,5 +11,6 @@ export type IRental= {
    advancedPayment?: boolean;
    totalPaid?: boolean
    reviewAdded?:boolean
-   quantity:number
+   quantity:number,
+   createdAt?: Date;
   }

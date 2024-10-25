@@ -164,7 +164,18 @@ const getRentalTransaction = async (id: string) => {
     console.log(result);
     return result;
 };
+const rentalPayment = async () => {
 
+    const result = await RentalModel.find({totalPaid: false})
+        .populate('userId', 'name')
+        .populate('bikeId', 'name');
+
+    return result;
+
+
+       
+   
+};
 
 
 export const rentalService = {
@@ -173,5 +184,6 @@ export const rentalService = {
     getAllRentals,
     fullPayment,
     allrentalbike,
-    getRentalTransaction
+    getRentalTransaction,
+    rentalPayment
 };
