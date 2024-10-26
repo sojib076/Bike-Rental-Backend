@@ -26,12 +26,15 @@ const createRental = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(vo
     });
 }));
 const returnRental = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield booking_services_1.rentalService.returnRental(req.params.id);
+    const { id } = req.params;
+    const { returntime } = req.query;
+    console.log(req.query);
+    const result = yield booking_services_1.rentalService.returnRental(id, returntime);
     (0, sendResponse_1.default)(res, {
         data: result,
         message: 'Bike returned successfully',
         statusCode: 200,
-        success: true
+        success: true,
     });
 }));
 const getAllRentals = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -95,7 +98,9 @@ const getRentalTransaction = (0, asyncHandler_1.asyncHandler)((req, res) => __aw
     });
 }));
 const rentalPayment = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('rentalPayment');
     const result = yield booking_services_1.rentalService.rentalPayment();
+    console.log(result);
     if (result.length === 0) {
         return (0, sendResponse_1.default)(res, {
             data: result,

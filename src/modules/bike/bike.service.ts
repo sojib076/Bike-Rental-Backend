@@ -11,21 +11,48 @@ const createBike = async (body: TBike) => {
     return bike;
 };
 
-const getAllbikes= async(req:any)=>{
+const getAllbikes = async (req: any) => {
     const searchQuery = req.query.searchTerm as string;
-    
-    let query: any = {};
-    if (searchQuery) {
-        query.name = { $regex: searchQuery, $options: 'i' }; 
-      }
+    const bikeFilter = req.query.brand as string;
+    const modelFilter = req.query.model as string;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const query: any = {};
 
-    const bikes = await BikeModel.find(query);
-    if (!bikes) {
-        throw new AppError(httpStatus.NOT_FOUND, 'No bikes found');
+    if (searchQuery) {
+        query.name = { $regex: searchQuery, $options: 'i' };
     }
-    const fillterQunatity = bikes.filter((bike)=>bike.quantity>0)
-    return fillterQunatity;
-}
+
+    if (bikeFilter) {
+        query.brand = { $regex: bikeFilter, $options: 'i' };
+    }
+
+    if (modelFilter) {
+        query.model = { $regex: modelFilter, $options: 'i' };
+    }
+
+   
+    const totalCount = await BikeModel.countDocuments(query);
+  
+ 
+    const bikes = await BikeModel.find(query)
+        .limit(limit)
+        .skip((page - 1) * limit);
+
+        console.log(bikes);
+
+
+    const availableBikes = bikes.filter((bike) => bike.quantity > 0);
+
+    return {
+        bikes: availableBikes,
+        totalCount, 
+        currentPage: page,
+        
+        totalPages: Math.ceil(totalCount / limit),
+    };
+};
+
 
 const updateBike = async (id:string,body:Partial<TBike>) => {
     const bike = await BikeModel.findById(id);
@@ -42,13 +69,13 @@ const deleteBike = async (id:string) => {
         throw new AppError(httpStatus.NOT_FOUND, 'Bike not found');
     }
 
-    // Step 2: Delete the bike from the database
+  
     const deletedBike = await BikeModel.findByIdAndDelete(id);
     if (!deletedBike) {
         throw new AppError(httpStatus.NOT_FOUND, 'Bike not found during deletion');
     }
 
-    // Step 3: Return the deleted bike's data
+   
     return deletedBike;
 };
 

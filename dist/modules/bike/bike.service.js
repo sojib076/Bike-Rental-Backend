@@ -23,16 +23,32 @@ const createBike = (body) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getAllbikes = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const searchQuery = req.query.searchTerm;
-    let query = {};
+    const bikeFilter = req.query.brand;
+    const modelFilter = req.query.model;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const query = {};
     if (searchQuery) {
         query.name = { $regex: searchQuery, $options: 'i' };
     }
-    const bikes = yield bike_model_1.BikeModel.find(query);
-    if (!bikes) {
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'No bikes found');
+    if (bikeFilter) {
+        query.brand = { $regex: bikeFilter, $options: 'i' };
     }
-    const fillterQunatity = bikes.filter((bike) => bike.quantity > 0);
-    return fillterQunatity;
+    if (modelFilter) {
+        query.model = { $regex: modelFilter, $options: 'i' };
+    }
+    const totalCount = yield bike_model_1.BikeModel.countDocuments(query);
+    const bikes = yield bike_model_1.BikeModel.find(query)
+        .limit(limit)
+        .skip((page - 1) * limit);
+    console.log(bikes);
+    const availableBikes = bikes.filter((bike) => bike.quantity > 0);
+    return {
+        bikes: availableBikes,
+        totalCount,
+        currentPage: page,
+        totalPages: Math.ceil(totalCount / limit),
+    };
 });
 const updateBike = (id, body) => __awaiter(void 0, void 0, void 0, function* () {
     const bike = yield bike_model_1.BikeModel.findById(id);
@@ -47,12 +63,10 @@ const deleteBike = (id) => __awaiter(void 0, void 0, void 0, function* () {
     if (!updatedBike) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Bike not found');
     }
-    // Step 2: Delete the bike from the database
     const deletedBike = yield bike_model_1.BikeModel.findByIdAndDelete(id);
     if (!deletedBike) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Bike not found during deletion');
     }
-    // Step 3: Return the deleted bike's data
     return deletedBike;
 });
 const getSingleBike = (id) => __awaiter(void 0, void 0, void 0, function* () {

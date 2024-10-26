@@ -16,6 +16,6 @@ const RentalSchema = new Schema<IRental>({
     createdAt: { type: Date, default: Date.now },
   },);
   
-  // Create and export the Rental model
+
 
 export const RentalModel = model<IRental>('Rental', RentalSchema);

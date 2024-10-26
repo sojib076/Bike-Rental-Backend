@@ -73,7 +73,9 @@ const createRental = async (req: Request) => {
 
 };
 
-const returnRental = async (id: string) => {
+const returnRental = async (id: string,returnTime:any) => {
+    console.log(returnTime,'sdfghjkl');
+  
     const findRentalBike = await RentalModel.findById(id);
 
     if (!findRentalBike) throw new AppError(404, 'Rental not found');
@@ -92,10 +94,10 @@ const returnRental = async (id: string) => {
       
         const startTime: Date = new Date(findRentalBike.startTime);
       
-        const returnTime: Date = new Date();
+        const returnTimea: Date = new Date(returnTime);
 
         
-        const durationInHours: number = Math.ceil((returnTime.getTime() - startTime.getTime()) / (1000 * 60 * 60)); // 
+        const durationInHours: number = Math.ceil((returnTimea.getTime() - startTime.getTime()) / (1000 * 60 * 60)); // 
         const pricePerHour: number = bike.pricePerHour;
        
        
@@ -104,7 +106,7 @@ const returnRental = async (id: string) => {
         
         const rentalPriceandTime = await RentalModel.findByIdAndUpdate(id, {  totalCost: totalCost, isReturned: true ,
 
-            returnTime: returnTime
+            returnTime: returnTimea
          }
             , { new: true },).session(session);
         
@@ -164,17 +166,14 @@ const getRentalTransaction = async (id: string) => {
     console.log(result);
     return result;
 };
+
+
+
 const rentalPayment = async () => {
-
-    const result = await RentalModel.find({totalPaid: false})
-        .populate('userId', 'name')
+    const result = await RentalModel.find()
+        .populate('userId', 'email')
         .populate('bikeId', 'name');
-
     return result;
-
-
-       
-   
 };
 
 

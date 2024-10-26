@@ -67,7 +67,8 @@ const createRental = (req) => __awaiter(void 0, void 0, void 0, function* () {
         throw new AppError_1.default(500, 'Error creating rental');
     }
 });
-const returnRental = (id) => __awaiter(void 0, void 0, void 0, function* () {
+const returnRental = (id, returnTime) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(returnTime, 'sdfghjkl');
     const findRentalBike = yield booking_model_1.RentalModel.findById(id);
     if (!findRentalBike)
         throw new AppError_1.default(404, 'Rental not found');
@@ -78,13 +79,13 @@ const returnRental = (id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         session.startTransaction();
         const startTime = new Date(findRentalBike.startTime);
-        const returnTime = new Date();
-        const durationInHours = Math.ceil((returnTime.getTime() - startTime.getTime()) / (1000 * 60 * 60)); // 
+        const returnTimea = new Date(returnTime);
+        const durationInHours = Math.ceil((returnTimea.getTime() - startTime.getTime()) / (1000 * 60 * 60)); // 
         const pricePerHour = bike.pricePerHour;
         // calculate the total cost
         const totalCost = durationInHours * pricePerHour * ((findRentalBike === null || findRentalBike === void 0 ? void 0 : findRentalBike.quantity) || 1);
         const rentalPriceandTime = yield booking_model_1.RentalModel.findByIdAndUpdate(id, { totalCost: totalCost, isReturned: true,
-            returnTime: returnTime
+            returnTime: returnTimea
         }, { new: true }).session(session);
         const setbikeavailable = yield bike_model_1.BikeModel.findByIdAndUpdate(findRentalBike.bikeId, {
             isAvailable: true,
@@ -133,8 +134,8 @@ const getRentalTransaction = (id) => __awaiter(void 0, void 0, void 0, function*
     return result;
 });
 const rentalPayment = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield booking_model_1.RentalModel.find({ totalPaid: false })
-        .populate('userId', 'name')
+    const result = yield booking_model_1.RentalModel.find()
+        .populate('userId', 'email')
         .populate('bikeId', 'name');
     return result;
 });
