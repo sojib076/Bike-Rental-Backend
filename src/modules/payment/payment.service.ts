@@ -22,17 +22,34 @@ const confirmationService = async (id: any) => {
         <html>
         <head>
             <title>Payment Successful</title>
+             <style>
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
         </head>
         <body>
             <h1>Payment Successful</h1>
             <p>Thank you for your payment</p>
+              <a href="https://bike-rental-tau.vercel.app/" class="button" >Go to Home</a>
         </body>
         </html>`;
     } 
 
        
 }
- // If advancePayment is not true, set it to true
+
  const setBikeAvailable = await BikeModel.findByIdAndUpdate(rental?.bikeId, { isAvailable: false });
  if (!setBikeAvailable) throw new Error('Error updating bike availability');
 
