@@ -17,6 +17,10 @@ const getAllbikes = async (req: any) => {
     const modelFilter = req.query.model as string;
     const page = parseInt(req.query.page as string) || 1;
     const limit = parseInt(req.query.limit as string) || 10;
+    const recentlyAdded = req.query.recentlyAdded as string;
+    console.log(page,limit);
+  
+
     const query: any = {};
 
     if (searchQuery) {
@@ -39,16 +43,21 @@ const getAllbikes = async (req: any) => {
         .limit(limit)
         .skip((page - 1) * limit);
 
-        console.log(bikes);
 
 
-    const availableBikes = bikes.filter((bike) => bike.quantity > 0);
+    const availableBikes = bikes.filter((bike) => bike.quantity > 0 );
+    if (recentlyAdded === 'true') {
+        availableBikes.reverse();
+    }else{
+        availableBikes 
+    }
+
+
 
     return {
         bikes: availableBikes,
         totalCount, 
         currentPage: page,
-        
         totalPages: Math.ceil(totalCount / limit),
     };
 };

@@ -27,7 +27,6 @@ const createBike = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void
 }));
 const getAllbikes = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    console.log('hi', req.query.searchTerm);
     const result = yield bike_service_1.bikeService.getAllbikes(req);
     if (((_a = result === null || result === void 0 ? void 0 : result.bikes) === null || _a === void 0 ? void 0 : _a.length) === 0) {
         return (0, sendResponse_1.default)(res, {

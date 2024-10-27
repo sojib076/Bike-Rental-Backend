@@ -69,7 +69,7 @@ const changeUserRole = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(
 }));
 // getAllUsers
 const getAllUsers = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield userservices_1.userServices.getAllUsers();
+    const result = yield userservices_1.userServices.getAllUsers(req);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         message: "All users retrieved successfully",

@@ -27,6 +27,8 @@ const getAllbikes = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const modelFilter = req.query.model;
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
+    const recentlyAdded = req.query.recentlyAdded;
+    console.log(page, limit);
     const query = {};
     if (searchQuery) {
         query.name = { $regex: searchQuery, $options: 'i' };
@@ -41,8 +43,13 @@ const getAllbikes = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const bikes = yield bike_model_1.BikeModel.find(query)
         .limit(limit)
         .skip((page - 1) * limit);
-    console.log(bikes);
     const availableBikes = bikes.filter((bike) => bike.quantity > 0);
+    if (recentlyAdded === 'true') {
+        availableBikes.reverse();
+    }
+    else {
+        availableBikes;
+    }
     return {
         bikes: availableBikes,
         totalCount,

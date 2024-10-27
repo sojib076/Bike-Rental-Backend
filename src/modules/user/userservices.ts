@@ -100,10 +100,21 @@ const changeUserRole = async (id: string) => {
     }
 
 }
-const getAllUsers = async () => {
-    const users = await User.find();
-    return users;
-}
+
+const getAllUsers = async (req:Request) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+    const users = await User.find().skip(skip).limit(limit);
+    
+    const totalUsers = await User.countDocuments();
+    return {
+        users,
+        totalPages: Math.ceil(totalUsers / limit),
+        currentPage: page,
+        totalUsers,
+    };
+};
 const deleteUser = async (id: string) => {
     const find = await User.findById(id);
     if (!find) {

@@ -1,5 +1,4 @@
-import httpStatus from "http-status";
-import AppError from "../../error/AppError";
+
 import { asyncHandler } from "../../utils/asyncHandler";
 import sendResponse from "../../utils/sendResponse";
 import { userServices } from "./userservices";
@@ -62,7 +61,8 @@ const changeUserRole = asyncHandler(async (req, res) => {
 });
 // getAllUsers
 const getAllUsers = asyncHandler(async (req, res) => {
-    const result = await userServices.getAllUsers();
+  
+    const result = await userServices.getAllUsers(req);
     sendResponse(res,{
         statusCode:200,
         message:"All users retrieved successfully",

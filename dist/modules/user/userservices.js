@@ -104,9 +104,18 @@ const changeUserRole = (id) => __awaiter(void 0, void 0, void 0, function* () {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'Error updating user role');
     }
 });
-const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield user_model_1.User.find();
-    return users;
+const getAllUsers = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const users = yield user_model_1.User.find().skip(skip).limit(limit);
+    const totalUsers = yield user_model_1.User.countDocuments();
+    return {
+        users,
+        totalPages: Math.ceil(totalUsers / limit),
+        currentPage: page,
+        totalUsers,
+    };
 });
 const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const find = yield user_model_1.User.findById(id);

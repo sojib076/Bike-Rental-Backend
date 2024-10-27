@@ -13,7 +13,7 @@ const createBike = asyncHandler(async (req, res) => {
 });
 
 const getAllbikes = asyncHandler(async (req, res) => {
- console.log('hi',req.query.searchTerm);
+ 
     const result = await bikeService.getAllbikes(req);
     if (result?.bikes?.length === 0) {
         return sendResponse(res, {
