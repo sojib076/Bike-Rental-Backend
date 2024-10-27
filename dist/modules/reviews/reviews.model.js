@@ -5,7 +5,8 @@ exports.Review = void 0;
 const mongoose_1 = require("mongoose");
 const reviewSchema = new mongoose_1.Schema({
     bikeId: {
-        type: String,
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: "Bike",
         required: true,
     },
     userId: {

@@ -42,7 +42,20 @@ const getpostreviews = (bikeId) => __awaiter(void 0, void 0, void 0, function* (
         return err;
     }
 });
+const getuserreviews = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(userId);
+    try {
+        const result = yield reviews_model_1.Review.find({ userId: userId }).populate('bikeId', 'name');
+        console.log(result);
+        return result;
+    }
+    catch (err) {
+        console.log(err);
+        return err;
+    }
+});
 exports.reviewService = {
     addReview,
-    getpostreviews
+    getpostreviews,
+    getuserreviews
 };

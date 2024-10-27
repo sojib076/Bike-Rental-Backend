@@ -26,10 +26,24 @@ const getpostreviews= asyncHandler(async (req, res) => {
         success: true
     });
 });
+const getuserreviews = asyncHandler(async (req, res) => {
+    // get from id 
+    const userId=  req.user.userId as string;
 
+    const result = await  reviewService.getuserreviews(userId);
+    console.log(result ,'result reviews');
+
+    sendResponse(res, {
+        data: result,
+        message: 'Rental created successfully',
+        statusCode: 200,
+        success: true
+    });
+});
 
 
 export const reviewController = {
     addReview,
-    getpostreviews
+    getpostreviews,
+    getuserreviews
 };

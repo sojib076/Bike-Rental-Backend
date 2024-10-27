@@ -10,7 +10,7 @@ const createRental = async (req: Request) => {
     const rental: IRental = req.body;
     const RequestQuantity = parseInt(req.body.quantity);
    
-    rental.userId = req.user.userId;
+    rental.userId = req.user.userId ;
     
     const findbike = await BikeModel.findById(rental.bikeId);
     console.log(findbike?.quantity);

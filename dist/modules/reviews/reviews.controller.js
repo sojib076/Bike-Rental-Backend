@@ -36,7 +36,20 @@ const getpostreviews = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(
         success: true
     });
 }));
+const getuserreviews = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    // get from id 
+    const userId = req.user.userId;
+    const result = yield reviews_services_1.reviewService.getuserreviews(userId);
+    console.log(result, 'result reviews');
+    (0, sendResponse_1.default)(res, {
+        data: result,
+        message: 'Rental created successfully',
+        statusCode: 200,
+        success: true
+    });
+}));
 exports.reviewController = {
     addReview,
-    getpostreviews
+    getpostreviews,
+    getuserreviews
 };

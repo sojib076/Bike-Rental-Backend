@@ -3,7 +3,7 @@
 import { Schema } from "mongoose";
 
 export type IReview = {
-    bikeId: string
+    bikeId:  Schema.Types.ObjectId;
     userId?: Schema.Types.ObjectId;
     rating: number;
     date?: Date;

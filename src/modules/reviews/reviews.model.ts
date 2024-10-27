@@ -6,8 +6,8 @@ import { IReview } from "./reviews.interface";
 
 const reviewSchema = new Schema<IReview>({
   bikeId: {
-    type: String,
-
+    type: Schema.Types.ObjectId,
+    ref: "Bike",
     required: true,
   },
   userId: {

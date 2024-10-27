@@ -43,9 +43,21 @@ const getpostreviews = async (bikeId:string) => {
     }
     
 };
+const getuserreviews = async (userId:string) => {
+    console.log(userId);
+    try{
+        const result = await Review.find({userId:userId}).populate('bikeId' , 'name')
+        console.log(result);
+        return result
+    }catch(err){
+        console.log(err);
+        return err
+    }
+};
 
 
 export const reviewService = {
     addReview,
-    getpostreviews
+    getpostreviews,
+    getuserreviews
 };
