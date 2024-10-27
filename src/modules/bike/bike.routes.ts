@@ -18,4 +18,5 @@ router.get("/:id",bikeController.getSingleBike);
 
 
 
+
 export const  bikeRoutes= router;

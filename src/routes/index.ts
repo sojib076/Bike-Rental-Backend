@@ -4,6 +4,7 @@ import { bikeRoutes } from "../modules/bike/bike.routes";
 import { rentalRoutes } from "../modules/booking/booking.routes";
 import { paymentRoutes } from "../modules/payment/payment.routes";
 import { reviewsRoute } from "../modules/reviews/reviews.route";
+import { favourite } from "../modules/Favourite/favourite.routes";
 
 
 
@@ -32,6 +33,10 @@ const moduleRoutes = [
   },{
     path:'/reviews',
     route:reviewsRoute
+  },
+  {
+    path: '/favourite',
+    route: favourite
   }
 ];
 

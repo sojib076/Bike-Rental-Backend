@@ -19,6 +19,5 @@ router.put('/me', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin, user_constan
 router.put('/:id/role', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), user_controller_1.userController.changeUserRole);
 // admin can get all users
 router.get('/allusers', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), user_controller_1.userController.getAllUsers);
-// admin can delete user
 router.delete('/:id', (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), user_controller_1.userController.deleteUser);
 exports.userRoutes = router;

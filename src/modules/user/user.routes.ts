@@ -19,7 +19,7 @@ router.put('/me', auth(USER_ROLE.admin,USER_ROLE.user), validateRequest(updateUs
 router.put('/:id/role', auth(USER_ROLE.admin), userController.changeUserRole);
 // admin can get all users
 router.get('/allusers', auth(USER_ROLE.admin), userController.getAllUsers);
-// admin can delete user
+
 router.delete('/:id', auth(USER_ROLE.admin), userController.deleteUser);
 
 export const userRoutes = router;
