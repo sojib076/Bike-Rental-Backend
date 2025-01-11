@@ -83,10 +83,16 @@ const getSingleBike = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
     return bike;
 });
+const getrelatedBikes = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(id);
+    const relatedBikes = yield bike_model_1.BikeModel.find({ _id: { $ne: id } }).limit(3);
+    return relatedBikes;
+});
 exports.bikeService = {
     createBike,
     getAllbikes,
     updateBike,
     deleteBike,
-    getSingleBike
+    getSingleBike,
+    getrelatedBikes
 };

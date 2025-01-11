@@ -16,6 +16,8 @@ router.put("/:id",auth(USER_ROLE.admin),validateRequest(updatedBikeSchema) ,bike
 router.delete("/:id",auth(USER_ROLE.admin),bikeController.deleteBike);
 router.get("/:id",bikeController.getSingleBike);
 
+router.get("/related/:id",bikeController.getrelatedBikes);
+
 
 
 

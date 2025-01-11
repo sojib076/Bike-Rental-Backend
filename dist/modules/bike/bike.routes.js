@@ -16,4 +16,5 @@ router.get("/", bike_controller_1.bikeController.getAllbikes);
 router.put("/:id", (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), (0, validateRequest_1.default)(bike_validation_1.updatedBikeSchema), bike_controller_1.bikeController.updateBike);
 router.delete("/:id", (0, auth_1.auth)(user_constant_1.USER_ROLE.admin), bike_controller_1.bikeController.deleteBike);
 router.get("/:id", bike_controller_1.bikeController.getSingleBike);
+router.get("/related/:id", bike_controller_1.bikeController.getrelatedBikes);
 exports.bikeRoutes = router;

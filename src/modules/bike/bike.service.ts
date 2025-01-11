@@ -96,12 +96,22 @@ const getSingleBike = async (id: string) => {
 
     return bike;
 };
+
+
+const getrelatedBikes = async (id: string) => {
+   console.log(id);
+
+    const relatedBikes = await BikeModel.find({ _id: { $ne: id } }).limit(3);
+
+    return relatedBikes;
+};
 export const bikeService = {
     createBike,
     getAllbikes,
     updateBike,
     deleteBike,
-    getSingleBike
+    getSingleBike,
+    getrelatedBikes
    
 };
 

@@ -70,10 +70,20 @@ const getSingleBike = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(v
         message: 'Bike retrieved successfully'
     });
 }));
+const getrelatedBikes = (0, asyncHandler_1.asyncHandler)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield bike_service_1.bikeService.getrelatedBikes(req.params.id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        data: result,
+        success: true,
+        message: ' Related Bikes retrieved successfully'
+    });
+}));
 exports.bikeController = {
     createBike,
     getAllbikes,
     updateBike,
     deleteBike,
-    getSingleBike
+    getSingleBike,
+    getrelatedBikes
 };

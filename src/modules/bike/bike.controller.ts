@@ -60,7 +60,15 @@ const getSingleBike = asyncHandler(async (req, res) => {
         message:'Bike retrieved successfully'
     })
 });
-
+const getrelatedBikes = asyncHandler(async (req, res) => {
+    const result = await bikeService.getrelatedBikes(req.params.id);
+    sendResponse(res,{
+        statusCode:200,
+        data:result,
+        success:true,
+        message:' Related Bikes retrieved successfully'
+    })
+});
 
 
 export const bikeController = {
@@ -68,5 +76,6 @@ export const bikeController = {
     getAllbikes,
     updateBike,
     deleteBike,
-    getSingleBike
+    getSingleBike,
+    getrelatedBikes
 }

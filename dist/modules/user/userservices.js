@@ -36,7 +36,6 @@ const userLogin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, 'User not found');
     }
     const isMatch = yield bcrypt_1.default.compare(payload.password, findUser.password); // compare the password
-    // if password is incorrect it will throw an error
     if (!isMatch) {
         throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, 'Password is incorrect');
     }
@@ -49,7 +48,7 @@ const userLogin = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         email: findUser.email,
         role: findUser.role
     };
-    const token = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, { expiresIn: '1d' });
+    const token = jsonwebtoken_1.default.sign(jwtPayload, config_1.default.jwt_secret, { expiresIn: '365d' });
     // return the token and user object
     return {
         token,

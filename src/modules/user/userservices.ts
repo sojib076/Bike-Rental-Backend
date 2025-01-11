@@ -14,7 +14,7 @@ const userLogin = async (payload: TuserLogin) => {
     }
     const isMatch = await bcrypt.compare(payload.password, findUser.password); // compare the password
 
-    // if password is incorrect it will throw an error
+
     if (!isMatch) {
         throw new AppError(httpStatus.UNAUTHORIZED, 'Password is incorrect'); 
     }
@@ -30,7 +30,7 @@ const userLogin = async (payload: TuserLogin) => {
         role: findUser.role
     }
 
-    const token = jwt.sign(jwtPayload, config.jwt_secret as string, { expiresIn: '1d' });
+    const token = jwt.sign(jwtPayload, config.jwt_secret as string, { expiresIn: '365d' });
 
 
     // return the token and user object
